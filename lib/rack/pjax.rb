@@ -11,7 +11,10 @@ module Rack
     def call(env)
       status, headers, body = @app.call(env)
       return [status, headers, body] unless pjax?(env)
-
+      
+			if (env["REQUEST_URI"] =~ /.*storage/) != nil
+				return [status, headers, body]
+			end
       headers = HeaderHash.new(headers)
 
       new_body = ""
